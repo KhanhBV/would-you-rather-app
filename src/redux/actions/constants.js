@@ -1,0 +1,5 @@
+export const LOG_IN = 'LOG_IN';
+export const GET_QUESTIONS = 'GET_QUESTIONS';
+export const UPDATE_UNANSWERED_QUESTIONS = 'UPDATE_UNANSWERED_QUESTIONS';
+
+export const GET_USERS = 'GET_USERS';

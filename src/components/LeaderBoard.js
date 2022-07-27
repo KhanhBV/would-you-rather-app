@@ -6,7 +6,7 @@ const LeaderBoard = () => {
         <div className='align-items-center col-2'>
           <img
             className='avatar-board'
-            src={require("../images/man.png")}
+            src={'https://bit.ly/3oBTUrr'}
             alt='avatar'
           />
         </div>
