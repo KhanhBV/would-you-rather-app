@@ -16,8 +16,25 @@ body {
 }
 
 .avatar-board {
-  height: 65px;
-  width: 65px;
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+}
+
+.avatar-auth-user {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.link {
+  text-decoration: none;
+  color: #fff;
+}
+
+.card {
+  min-width: 400px !important;
+  max-width: 500px;
 }
 
 p {

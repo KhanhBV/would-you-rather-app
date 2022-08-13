@@ -1,10 +1,14 @@
-import { useEffect } from "react";
-import { Button, Card } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Card } from "react-bootstrap";
 import { getUsers, login } from "../redux/actions/users";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [userId, setUserId] = useState(null);
 
   const { userArr } = useSelector((state) => state.users);
 
@@ -13,13 +17,17 @@ const Login = () => {
   };
 
   const handleSelectUser = (e) => {
-    dispatch(login(e.target.value));
+    setUserId(e.target.value);
+  };
+
+  const handleLogin = () => {
+    dispatch(login(userId));
+    navigate("/", { replace: true });
   };
 
   const renderDropdownItem = () => {
-    console.log("userArr");
     return userArr.map((user) => (
-      <option value={user.id}>
+      <option key={user.id} value={user.id}>
         {user.name}
       </option>
     ));
@@ -41,13 +49,23 @@ const Login = () => {
         <Card.Img variant='top' src={require("../images/react-icon.png")} />
         <Card.Body className='text-center'>
           <Card.Title>Sign in</Card.Title>
-          <select className='form-select' onChange={item => handleSelectUser(item)} defaultValue={'default'} aria-label='Default select'>
-            <option value={'default'} disabled>Select User</option>
+          <select
+            className='form-select'
+            onChange={(item) => handleSelectUser(item)}
+            defaultValue={"default"}
+            aria-label='Default select'>
+            <option value={"default"} disabled>
+              Select User
+            </option>
             {userArr.length > 0 && renderDropdownItem()}
           </select>
-          <Button className='mt-3 col-12' variant='primary'>
+          <button
+            type='button'
+            className='btn btn-primary mt-3 col-12'
+            variant='primary'
+            onClick={() => handleLogin()}>
             Sign In
-          </Button>
+          </button>
         </Card.Body>
       </Card>
     </div>

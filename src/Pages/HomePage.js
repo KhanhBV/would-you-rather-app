@@ -4,45 +4,28 @@ import { useDispatch, useSelector } from "react-redux";
 import QuestionBoard from "../components/QuestionBoard";
 import {
   getQuestions,
+  saveQuestionAnswer,
   updateUnansweredQuestions,
 } from "../redux/actions/questions";
 import { getUsers } from "../redux/actions/users";
+import { updateAnsweredQuestions } from "./../redux/actions/questions";
 
 const HomePage = () => {
   const dispatch = useDispatch();
 
-  const { questions } = useSelector((state) => state.questions);
-  const { users } = useSelector((state) => state.users);
-  const user = {
-    id: "sarahedo",
-    name: "Sarah Edo",
-    avatarURL: "srcimagesman-blue-hoodie.png",
-    answers: {
-      "8xf0y6ziyjabvozdd253nd": "optionOne",
-      "6ni6ok3ym7mf1p33lnez": "optionTwo",
-      am8ehyc8byjqgar0jgpub9: "optionTwo",
-      loxhs1bqm25b708cmbf3g: "optionTwo",
-    },
-    questions: ["8xf0y6ziyjabvozdd253nd", "am8ehyc8byjqgar0jgpub9"],
-  };
-  let ansQuestion = [];
-  let unansQuestion = [];
-
-  const loadQuestions = () => {
-    dispatch(getQuestions());
-    console.log("questions loaded>>", questions);
-  };
-
-  const loadUsers = () => {
-    dispatch(getUsers());
-  };
+  const { questions, answeredQuestions, unansweredQuestions } = useSelector(
+    (state) => state.questions
+  );
+  const { users, authUser } = useSelector((state) => state.users);
 
   const filterQuestions = () => {
+    let ansQuestion = [];
+    let unansQuestion = [];
     if (questions && Object.values(questions).length > 0) {
       Object.values(questions).forEach((element) => {
         if (
-          element?.optionOne.votes.indexOf(user.id) > -1 ||
-          element?.optionTwo.votes.indexOf(user.id) > -1
+          element?.optionOne?.votes.indexOf(authUser.id) > -1 ||
+          element?.optionTwo?.votes.indexOf(authUser.id) > -1
         ) {
           ansQuestion.push(element);
         } else {
@@ -50,39 +33,64 @@ const HomePage = () => {
         }
       });
     }
+    dispatch(
+      updateUnansweredQuestions(
+        unansQuestion.sort((a, b) => b.timestamp - a.timestamp)
+      )
+    );
+    dispatch(
+      updateAnsweredQuestions(
+        ansQuestion.sort((a, b) => b.timestamp - a.timestamp)
+      )
+    );
   };
 
   useEffect(() => {
-    loadQuestions();
-    loadUsers();
-  }, []);
-
-  if (questions) {
     filterQuestions();
-    console.log("return questions>", questions);
+  }, [questions]);
+
+  if (
+    questions &&
+    (answeredQuestions.length > 0 || unansweredQuestions.length > 0)
+  ) {
     return (
-      <div className='d-flex flex-column align-items-center mt-3'>
-        <div className='border p-3'>
+      <div className='d-flex flex-column align-items-center mt-3 col-12'>
+        <div className='border p-3 col-12 card'>
           <Tabs
             fill
             defaultActiveKey='unanswered'
             id='uncontrolled-tab-example'
             className='mb-3'>
-            <Tab eventKey='unanswered' title='Unanswered Question'>
-              {unansQuestion.map((question) => (
-                <QuestionBoard
-                  question={question}
-                  user={users ? users[question?.author] : null}
-                />
-              ))}
+            <Tab
+              className='card'
+              eventKey='unanswered'
+              title='Unanswered Question'>
+              {unansweredQuestions.length > 0 ? (
+                unansweredQuestions.map((question) => (
+                  <QuestionBoard
+                    isAnswered={false}
+                    key={question.key}
+                    question={question}
+                    user={users ? users[question?.author] : null}
+                  />
+                ))
+              ) : (
+                <div className='text-center'>Do not have items!</div>
+              )}
             </Tab>
             <Tab eventKey='answered' title='Answered Question'>
-              {ansQuestion.map((question) => (
-                <QuestionBoard
-                  question={question}
-                  user={users ? users[question?.author] : null}
-                />
-              ))}
+              {answeredQuestions.length > 0 ? (
+                answeredQuestions.map((question) => (
+                  <QuestionBoard
+                    isAnswered={true}
+                    key={question.key}
+                    question={question}
+                    user={users ? users[question?.author] : null}
+                  />
+                ))
+              ) : (
+                <div className='text-center'>Do not have items!</div>
+              )}
             </Tab>
           </Tabs>
         </div>

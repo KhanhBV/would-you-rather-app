@@ -10,7 +10,6 @@ export const login = (user) => dispatch => {
 
 export const getUsers = () => async dispatch => {
   const response = await _getUsers().then(response => response);
-  console.log('response action>>>', response);
   dispatch({
     type: GET_USERS,
     payload: response

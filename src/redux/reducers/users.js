@@ -1,4 +1,4 @@
-import { GET_USERS, LOG_IN } from "../actions/constants";
+import { GET_USERS, LOG_IN, SAVE_QUESTION } from "../actions/constants";
 
 const initialState = {
   authUser: null,
@@ -25,6 +25,14 @@ function userReducer (state = initialState, action) {
         ...state,
         authUser: user
       }
+      case SAVE_QUESTION:
+        const users = {...state.users};
+        const submitUser = users && users[action.payload.author];
+        submitUser.questions.push(action.payload.id);
+        return {
+          ...state,
+          users
+        };
     default:
       return state
   }
