@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 const QuestionBoard = (props) => {
   const navigate = useNavigate();
-  const { question, user, isAnswered } = props;
+  const { question, user } = props;
   const { optionOne } = question;
   const handleViewPoll = () => {
     navigate(`/questions/${question.id}`, {
-      state: { question, user, isAnswered },
+      state: { user }
     });
   };
   return (

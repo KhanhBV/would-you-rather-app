@@ -2,12 +2,7 @@ import { useEffect } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import QuestionBoard from "../components/QuestionBoard";
-import {
-  getQuestions,
-  saveQuestionAnswer,
-  updateUnansweredQuestions,
-} from "../redux/actions/questions";
-import { getUsers } from "../redux/actions/users";
+import { updateUnansweredQuestions } from "../redux/actions/questions";
 import { updateAnsweredQuestions } from "./../redux/actions/questions";
 
 const HomePage = () => {
@@ -69,7 +64,7 @@ const HomePage = () => {
                 unansweredQuestions.map((question) => (
                   <QuestionBoard
                     isAnswered={false}
-                    key={question.key}
+                    key={question.id}
                     question={question}
                     user={users ? users[question?.author] : null}
                   />
@@ -83,7 +78,7 @@ const HomePage = () => {
                 answeredQuestions.map((question) => (
                   <QuestionBoard
                     isAnswered={true}
-                    key={question.key}
+                    key={question.id}
                     question={question}
                     user={users ? users[question?.author] : null}
                   />

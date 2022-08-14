@@ -37,13 +37,12 @@ function questionsReducer(state = initialState, action) {
 
     case SAVE_QUESTION:
       const question = action.payload;
-      const {id} = question;
-      const questions = {...state.questions};
+      const { id } = question;
+      const questions = { ...state.questions };
       questions[id] = question;
-      console.log('state.questions', state.questions);
       return {
         ...state,
-        questions
+        questions,
       };
 
     default:

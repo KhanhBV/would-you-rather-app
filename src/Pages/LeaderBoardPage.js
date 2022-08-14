@@ -5,29 +5,31 @@ const LeaderBoardPage = () => {
   const { users } = useSelector((state) => state.users);
 
   const countTotalScore = () => {
-    console.log("leaderboard: countTotalScore");
-    const ele = Object.values(users).map((user) => {
-      console.log("user: ", user);
-      const numberAnsweredQuestions = Object.values(user.answers).length;
-      const numberCreatedQuestions = user.questions.length;
-      const score = numberAnsweredQuestions + numberCreatedQuestions;
-      console.log("answer: ", score);
-      return {
-        ...user,
-        numberAnsweredQuestions,
-        numberCreatedQuestions,
-        score
-      }
-    }).sort((a, b) => b.score - a.score);
+    const ele =
+      users &&
+      Object.values(users)
+        .map((user) => {
+          const numberAnsweredQuestions = Object.values(user.answers).length;
+          const numberCreatedQuestions = user.questions.length;
+          const score = numberAnsweredQuestions + numberCreatedQuestions;
+          return {
+            ...user,
+            numberAnsweredQuestions,
+            numberCreatedQuestions,
+            score,
+          };
+        })
+        .sort((a, b) => b.score - a.score);
 
     return ele;
   };
 
   const renderLeaderBoard = () => {
     const data = countTotalScore();
-    const ele = data.map(user => {
+    const ele = data.map((user) => {
       return (
         <LeaderBoard
+          key={user.id}
           user={user}
           numberAnsweredQuestions={user.numberAnsweredQuestions}
           numberCreatedQuestions={user.numberCreatedQuestions}
@@ -36,8 +38,8 @@ const LeaderBoardPage = () => {
       );
     });
     return ele;
-  }
-  return <>{renderLeaderBoard()}</>;
+  };
+  if (users) return <>{renderLeaderBoard()}</>;
 };
 
 export default LeaderBoardPage;

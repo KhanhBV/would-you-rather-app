@@ -1,9 +1,7 @@
 import NewQuestionForm from "../components/NewQuestionForm";
 
 const NewQuestionFormPage = () => {
-  return (
-    <NewQuestionForm />
-  );
+  return <NewQuestionForm />;
 };
 
 export default NewQuestionFormPage;

@@ -40,3 +40,22 @@ body {
 p {
   margin-bottom: 0;
 }
+
+.nav-link-container {
+  width: 40%;
+  justify-content: space-evenly;
+}
+
+.active-link {
+  color: tomato;
+}
+
+.image-not-found {
+  width: 500px;
+}
+
+.center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

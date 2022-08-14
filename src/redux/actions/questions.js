@@ -30,11 +30,14 @@ export const saveQuestionAnswer =
 
 export const saveQuestion =
   (optionOneText, optionTwoText, author) => async (dispatch) => {
-    const response = await _saveQuestion({ optionOneText, optionTwoText, author });
-    console.log('response save question', response);
+    const response = await _saveQuestion({
+      optionOneText,
+      optionTwoText,
+      author,
+    });
     dispatch({
       type: SAVE_QUESTION,
-      payload: response
+      payload: response,
     });
   };
 

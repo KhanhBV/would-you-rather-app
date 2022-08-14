@@ -4,7 +4,7 @@ import userReducer from "./users";
 
 const rootReducer = combineReducers({
   users: userReducer,
-  questions: questionsReducer
-})
+  questions: questionsReducer,
+});
 
 export default rootReducer;

@@ -3,12 +3,14 @@ import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { saveQuestion } from "../redux/actions/questions";
+import { useNavigate } from "react-router-dom";
 
 const NewQuestionForm = () => {
   const [optionOne, setOptionOne] = useState("");
   const [optionTwo, setOptionTwo] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {authUser} = useSelector((state) => state.users);
 
@@ -25,6 +27,7 @@ const NewQuestionForm = () => {
     if (optionOne && optionTwo) {
       dispatch(saveQuestion(optionOne, optionTwo, authUser.id));
     }
+    navigate('/');
   };
 
   return (

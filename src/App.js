@@ -11,6 +11,7 @@ import LeaderBoardPage from "./Pages/LeaderBoardPage";
 import { useDispatch } from "react-redux";
 import { getQuestions, saveQuestionAnswer } from "./redux/actions/questions";
 import { getUsers } from "./redux/actions/users";
+import NotFoundPage from "./Pages/NotFoundPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='/login' element={<LoginPage />} />
+        <Route path='/404' element={<NotFoundPage />} />
         <Route
           path='/'
           element={
