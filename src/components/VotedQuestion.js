@@ -1,5 +1,5 @@
 import { Card } from "react-bootstrap";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { saveQuestionAnswer } from "../redux/actions/questions";
@@ -11,16 +11,19 @@ export const VotedQuestion = () => {
       optionOne.votes.includes(user.id) || optionTwo.votes.includes(user.id)
     );
   };
-  const navigate = useNavigate();
   const params = useParams();
-  const { authUser } = useSelector((state) => state.users);
+  const { authUser, users } = useSelector((state) => state.users);
   const { questions } = useSelector((state) => state.questions);
   const { question_id } = params;
   const question = questions && questions[question_id];
   const isAnswered =
     question && authUser && checkTypeQuestion(question, authUser);
   const location = useLocation();
-  const user = location && location.state?.user;
+  let user = location && location.state?.user;
+  if (!user && question) {
+    const userId = question.author;
+    user = users[userId];
+  }
   const dispatch = useDispatch();
 
   const [answer, setAnswer] = useState("");
@@ -65,11 +68,11 @@ export const VotedQuestion = () => {
                   <div
                     className={
                       "border p-3 mb-2 " +
-                      (question.optionOne.votes.includes(user.id)
+                      (question.optionOne.votes.includes(authUser.id)
                         ? "bg-success bg-gradient"
                         : "")
                     }>
-                    {question.optionOne.votes.includes(user.id) ? (
+                    {question.optionOne.votes.includes(authUser.id) ? (
                       <p className='mb-2 fw-bold bg-warning bg-gradient col-4 text-center'>
                         Your vote
                       </p>
@@ -92,11 +95,11 @@ export const VotedQuestion = () => {
                   <div
                     className={
                       "border p-3 mb-2 " +
-                      (question.optionTwo.votes.includes(user.id)
+                      (question.optionTwo.votes.includes(authUser.id)
                         ? "bg-success bg-gradient"
                         : "")
                     }>
-                    {question.optionTwo.votes.includes(user.id) ? (
+                    {question.optionTwo.votes.includes(authUser.id) ? (
                       <p className='mb-2 fw-bold bg-warning bg-gradient col-4 text-center'>
                         Your vote
                       </p>
@@ -167,7 +170,7 @@ export const VotedQuestion = () => {
       </div>
     );
   } else {
-    navigate("/404");
+    return <Navigate to='/404' />;
   }
 };
 

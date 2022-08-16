@@ -1,4 +1,9 @@
-import { GET_USERS, LOG_IN, SAVE_QUESTION } from "../actions/constants";
+import {
+  GET_USERS,
+  LOG_IN,
+  SAVE_QUESTION,
+  SAVE_QUESTION_ANSWER,
+} from "../actions/constants";
 import { LOG_OUT } from "./../actions/constants";
 
 const initialState = {
@@ -7,13 +12,17 @@ const initialState = {
   userArr: [],
 };
 
+const renderUserArr = (usersObj) => {
+  return Object.keys(usersObj).map((key) => {
+    return usersObj[key];
+  });
+};
+
 function userReducer(state = initialState, action) {
   switch (action.type) {
     case GET_USERS:
       const usersObj = action.payload;
-      const userList = Object.keys(usersObj).map((key) => {
-        return usersObj[key];
-      });
+      const userList = renderUserArr(usersObj);
       return {
         ...state,
         users: usersObj,
@@ -21,13 +30,7 @@ function userReducer(state = initialState, action) {
       };
     case LOG_IN:
       const { payload } = action;
-      let user;
-      if (typeof payload === "object" && payload) {
-        user = payload;
-      } else {
-        user = state.users && state.users[action.payload];
-      }
-      localStorage.setItem("authUser", JSON.stringify(user));
+      const user = state.users && state.users[payload];
       return {
         ...state,
         authUser: user,
@@ -44,7 +47,16 @@ function userReducer(state = initialState, action) {
       submitUser.questions.push(action.payload.id);
       return {
         ...state,
-        users,
+        users
+      };
+    case SAVE_QUESTION_ANSWER:
+      const userObj = action.payload.users;
+      const userArr = renderUserArr(userObj);
+      return {
+        ...state,
+        users: userObj,
+        userArr,
+        authUser: userObj[state.authUser?.id]
       };
     default:
       return state;

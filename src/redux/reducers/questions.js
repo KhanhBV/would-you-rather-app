@@ -22,7 +22,7 @@ function questionsReducer(state = initialState, action) {
     case SAVE_QUESTION_ANSWER:
       return {
         ...state,
-        questions: action.payload,
+        questions: action.payload.questions,
       };
     case UPDATE_UNANSWERED_QUESTIONS:
       return {

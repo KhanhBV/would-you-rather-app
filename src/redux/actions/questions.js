@@ -24,7 +24,7 @@ export const saveQuestionAnswer =
     const response = await _saveQuestionAnswer({ authedUser, qid, answer });
     dispatch({
       type: SAVE_QUESTION_ANSWER,
-      payload: response.questions,
+      payload: response,
     });
   };
 

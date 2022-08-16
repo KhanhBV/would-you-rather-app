@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { getUsers, login } from "../redux/actions/users";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const [userId, setUserId] = useState(null);
 
@@ -22,7 +23,7 @@ const Login = () => {
 
   const handleLogin = () => {
     dispatch(login(userId));
-    navigate("/", { replace: true });
+    navigate(state?.path || "/");
   };
 
   const renderDropdownItem = () => {

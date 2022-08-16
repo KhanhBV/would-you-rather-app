@@ -2,7 +2,7 @@ import "./App.css";
 import Header from "./components/Header";
 import LoginPage from "./Pages/LoginPage";
 import HomePage from "./Pages/HomePage";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import NewQuestionFormPage from "./Pages/NewQuestionFormPage";
 import { Fragment, useEffect } from "react";
 import AuthProvider from "./provider/AuthProvider";
@@ -14,6 +14,7 @@ import { getUsers } from "./redux/actions/users";
 import NotFoundPage from "./Pages/NotFoundPage";
 
 function App() {
+  console.disableYellowBox = true;
   const dispatch = useDispatch();
 
   const loadQuestions = () => {
@@ -67,6 +68,7 @@ function App() {
             </AuthProvider>
           }
         />
+        <Route path='*' element={<Navigate to='/404' />} />
       </Routes>
     </Fragment>
   );
